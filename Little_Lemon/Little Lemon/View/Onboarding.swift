@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-let kFirstName = "Hwang"
-let kLastName = "Yeji"
-let kEmail = "hwangyeji@gmail.com"
-let kIsLoggedIn = "kIsLoggedIn"
-
 
 struct Onboarding: View {
     @State private var firstName = ""
@@ -19,7 +14,7 @@ struct Onboarding: View {
     @State private var email = ""
     @State private var showAlert = false
     
-    @State var showHeroSearch = false
+//    @State var showHeroSearch = false
     @State private var isLoggedIn = false
     
     
@@ -28,33 +23,32 @@ struct Onboarding: View {
     var body: some View {
         NavigationStack{
             VStack{
-                MenuHero(showSearch: $showHeroSearch)
+                MenuHero()
                     .padding(.top)
                 VStack(alignment: .leading) {
                     Text("First Name")
                         .foregroundColor(CustomColor.highlight2.color)
-                        .font(CustomFonts.sectionCategories.font)
-                        .padding(.leading)
+                        .font(CustomFonts.leadText.font)
                     TextField("Input Your First Name", text: $firstName)
-                        .padding([.bottom,.leading,.trailing])
+                        .padding(.bottom)
                         .font(CustomFonts.paragraph.font)
                         .textFieldStyle(.roundedBorder)
                     
                     Text("Last Name")
                         .foregroundColor(CustomColor.highlight2.color)
-                        .font(CustomFonts.sectionCategories.font)
-                        .padding(.leading)
+                        .font(CustomFonts.leadText.font)
+                        
                     TextField("Input Your Last Name", text: $lastName)
-                        .padding([.bottom,.leading,.trailing])
+                        .padding(.bottom)
                         .font(CustomFonts.paragraph.font)
                         .textFieldStyle(.roundedBorder)
                     
                     Text("Email")
                         .foregroundColor(CustomColor.highlight2.color)
-                        .font(CustomFonts.sectionCategories.font)
-                        .padding(.leading)
+                        .font(CustomFonts.leadText.font)
+                        
                     TextField("Input Your Email", text: $email)
-                        .padding([.bottom,.leading,.trailing])
+                        .padding(.bottom)
                         .font(CustomFonts.paragraph.font)
                         .textFieldStyle(.roundedBorder)
                     
@@ -69,7 +63,7 @@ struct Onboarding: View {
                             .foregroundColor(CustomColor.highlight2.color)
                             .cornerRadius(10)
                     }
-                    .padding()
+                            .padding([.top,.bottom])
                     .alert(isPresented: $showAlert) {
                         Alert(title: Text("Alert"), message: Text("First Name, last Name, and email cannot be empty"), dismissButton: .default(Text("OK")))
                     }
@@ -79,6 +73,7 @@ struct Onboarding: View {
                 .navigationDestination(isPresented: $isLoggedIn) {
                     Home()
                 }
+                .navigationBarBackButtonHidden(true)
                 .navigationBarTitle("", displayMode: .inline)
                 .navigationBarItems(trailing: EmptyView())
                 .toolbar {
@@ -113,6 +108,12 @@ struct Onboarding: View {
             UserDefaults.standard.set(lastName, forKey: kLastName)
             UserDefaults.standard.set(email, forKey: kEmail)
             UserDefaults.standard.set(true, forKey: kIsLoggedIn)
+            
+            UserDefaults.standard.set(false, forKey: kOrderStatuses)
+            UserDefaults.standard.set(false, forKey: kPasswordChanges)
+            UserDefaults.standard.set(false, forKey:kSpecialOffers)
+            UserDefaults.standard.set(false, forKey:kNewsletter)
+            
             isLoggedIn = true
             
             

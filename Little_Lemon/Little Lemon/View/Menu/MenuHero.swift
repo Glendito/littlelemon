@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MenuHero: View {
     @State private var searchTextField:String = ""
-    @Binding var showSearch:Bool
+//    @Binding var showSearch:Bool
     
     var body: some View {
         VStack(alignment:.leading){
@@ -45,19 +45,19 @@ struct MenuHero: View {
             }
             .padding(.bottom)
             
-            if showSearch{
-                TextField("Search", text: $searchTextField)
-                    .padding(.horizontal) // Add horizontal padding only
-                    .padding(.bottom) // Add bottom padding
-                    .padding(.leading, 8) // Add leading padding for the magnifying glass icon
-                    .background(CustomColor.highlight1.color)
-                    .overlay(
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
-                            .padding(.leading, 8) // Adjust the position of the magnifying glass icon
-                            .frame(alignment: .leading), alignment: .leading
-                    )
-            }
+            
+//                TextField("Search", text: $searchTextField)
+//                    .padding(.horizontal) // Add horizontal padding only
+//                    .padding(.bottom) // Add bottom padding
+//                    .padding(.leading, 8) // Add leading padding for the magnifying glass icon
+//                    .background(CustomColor.highlight1.color)
+//                    .overlay(
+//                        Image(systemName: "magnifyingglass")
+//                            .foregroundColor(.gray)
+//                            .padding(.leading, 8) // Adjust the position of the magnifying glass icon
+//                            .frame(alignment: .leading), alignment: .leading
+//                    )
+            
             
         }
         .padding()
@@ -71,6 +71,6 @@ struct MenuHero: View {
 struct MenuHero_Previews: PreviewProvider {
     static var previews: some View {
         @State var test:Bool = true
-        MenuHero(showSearch: $test)
+        MenuHero()
     }
 }

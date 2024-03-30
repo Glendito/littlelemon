@@ -8,22 +8,33 @@
 import SwiftUI
 
 struct Home: View {
+    
+    @State private var goToProfile = false
     var body: some View {
-
-        TabView{
-            Menu()
-                .tabItem{
-                    Image(systemName: "list.dash")
-                    Text("Menu")
-                }
-            UserProfile()
-                .tabItem{
-                    Image(systemName: "square.and.pencil")
-                    Text("Profile")
-                }
-        }
+        let persistenceController = PersistenceController.shared
+        
+            
+//        TabView{
+//            Menu()
+//                .tabItem{
+//                    Image(systemName: "list.dash")
+//                    Text("Menu")
+//                }
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+//            UserProfile()
+//                .tabItem{
+//                    Image(systemName: "square.and.pencil")
+//                    Text("Profile")
+//                }
+//        }
+        
+        Menu()
+        .environment(\.managedObjectContext, persistenceController.container.viewContext)
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("", displayMode: .inline)
+        .navigationDestination(isPresented: $goToProfile ) {
+            UserProfile()
+        }
         .navigationBarItems(trailing: EmptyView())
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -36,6 +47,19 @@ struct Home: View {
             }
         }
         .background(Color.white.edgesIgnoringSafeArea(.all))
+        .navigationBarItems(trailing:
+            Button(action: {
+                // Handle profile image tap action
+                print("Profile image tapped")
+                goToProfile = true
+            }) {
+                Image("Profile")
+                    .resizable()
+                    .frame(width: 45, height: 45)
+                    .aspectRatio(contentMode: .fit)
+            }
+        )
+        
         
     }
 }
