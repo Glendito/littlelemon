@@ -65,3 +65,35 @@ enum CustomFonts{
         }
     }
 }
+
+struct MyToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Button {
+            configuration.isOn.toggle()
+        } label: {
+            HStack {
+                configuration.label
+            }
+        }
+        .foregroundColor(configuration.isOn ? CustomColor.highlight1.color : CustomColor.primary1.color)
+        .padding(5)
+        .background(configuration.isOn ? CustomColor.primary1.color : CustomColor.highlight1.color)
+        .cornerRadius(8)
+        .font(CustomFonts.sectionCategories.font)
+    }
+}
+
+struct CheckboxToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Button(action: {
+            configuration.isOn.toggle()
+        }) {
+            HStack {
+                Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
+                    .foregroundColor(configuration.isOn ? CustomColor.primary1.color: .secondary)
+                    .imageScale(.large)
+                configuration.label
+            }
+        }
+    }
+}
