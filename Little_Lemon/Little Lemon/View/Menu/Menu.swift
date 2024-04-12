@@ -99,7 +99,9 @@ struct Menu: View {
         
         PersistenceController.shared.clear()
         
-        let menuAddress :String = "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
+        let menuAddress :String = "https://mocki.io/v1/0d8cc5ef-9a02-479d-a894-e91d98570d7c"
+            /*https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json*/
+        
         let menuURL = URL(string: menuAddress)
         
         guard let menuURL = menuURL else{

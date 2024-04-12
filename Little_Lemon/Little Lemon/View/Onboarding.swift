@@ -13,8 +13,11 @@ struct Onboarding: View {
     @State private var lastName = ""
     @State private var email = ""
     @State private var showAlert = false
-    
-//    @State var showHeroSearch = false
+    @State private var showFirstNameInvalid = false
+    @State private var showLastNameInvalid = false
+    @State private var showEmailInvalid = false
+//    @State private var isValid = false
+
     @State private var isLoggedIn = false
     
     
@@ -26,31 +29,62 @@ struct Onboarding: View {
                 MenuHero()
                     .padding(.top)
                 VStack(alignment: .leading) {
-                    Text("First Name")
-                        .foregroundColor(CustomColor.highlight2.color)
-                        .font(CustomFonts.leadText.font)
+                    HStack{
+                        Text("First Name *")
+                            .foregroundColor(CustomColor.highlight2.color)
+                            .font(CustomFonts.leadText.font)
+                        if (showFirstNameInvalid){
+                            Text("First Name is invalid")
+                                .foregroundColor(Color.red)
+                                .font(CustomFonts.leadText.font)
+                        }
+                    }
                     TextField("Input Your First Name", text: $firstName)
-                        .padding(.bottom)
                         .font(CustomFonts.paragraph.font)
                         .textFieldStyle(.roundedBorder)
-                    
-                    Text("Last Name")
-                        .foregroundColor(CustomColor.highlight2.color)
-                        .font(CustomFonts.leadText.font)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(showFirstNameInvalid ? Color.red : Color.gray, lineWidth: 1)
+                        )
+                        .padding(.bottom)
+                    HStack{
+                        Text("Last Name *")
+                            .foregroundColor(CustomColor.highlight2.color)
+                            .font(CustomFonts.leadText.font)
+                        if (showLastNameInvalid){
+                            Text("Last Name is invalid")
+                                .foregroundColor(Color.red)
+                                .font(CustomFonts.leadText.font)
+                        }
+                    }
                         
                     TextField("Input Your Last Name", text: $lastName)
-                        .padding(.bottom)
                         .font(CustomFonts.paragraph.font)
                         .textFieldStyle(.roundedBorder)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(showLastNameInvalid ? Color.red : Color.gray, lineWidth: 1)
+                        )
+                        .padding(.bottom)
                     
-                    Text("Email")
-                        .foregroundColor(CustomColor.highlight2.color)
-                        .font(CustomFonts.leadText.font)
-                        
+                    HStack{
+                        Text("Email *")
+                            .foregroundColor(CustomColor.highlight2.color)
+                            .font(CustomFonts.leadText.font)
+                        if (showEmailInvalid){
+                            Text("Email is invalid")
+                                .foregroundColor(Color.red)
+                                .font(CustomFonts.leadText.font)
+                        }
+                    }
                     TextField("Input Your Email", text: $email)
-                        .padding(.bottom)
                         .font(CustomFonts.paragraph.font)
                         .textFieldStyle(.roundedBorder)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(showEmailInvalid ? Color.red : Color.gray, lineWidth: 1)
+                        )
+                        .padding(.bottom)
                     
                     Button(action: {
                         registerTapped()
@@ -104,6 +138,29 @@ struct Onboarding: View {
         if(firstName.isEmpty || lastName.isEmpty || email.isEmpty){
             showAlert = true
         }else{
+            showAlert = false
+        }
+        
+        if (firstName.count <= 3){
+            showFirstNameInvalid = true
+        }else{
+            showFirstNameInvalid = false
+        }
+        
+        if (lastName.count <= 3){
+            showLastNameInvalid = true
+        }else{
+            showLastNameInvalid = false
+        }
+        
+        if(!isValidEmail(email)){
+            showEmailInvalid = true
+        }else{
+            showEmailInvalid = false
+        }
+        
+        
+        if(showAlert == false && showFirstNameInvalid == false && showLastNameInvalid == false && showEmailInvalid == false){
             UserDefaults.standard.set(firstName, forKey: kFirstName)
             UserDefaults.standard.set(lastName, forKey: kLastName)
             UserDefaults.standard.set(email, forKey: kEmail)
@@ -111,8 +168,8 @@ struct Onboarding: View {
             
             UserDefaults.standard.set(false, forKey: kOrderStatuses)
             UserDefaults.standard.set(false, forKey: kPasswordChanges)
-            UserDefaults.standard.set(false, forKey:kSpecialOffers)
-            UserDefaults.standard.set(false, forKey:kNewsletter)
+            UserDefaults.standard.set(false, forKey: kSpecialOffers)
+            UserDefaults.standard.set(false, forKey: kNewsletter)
             
             isLoggedIn = true
             
@@ -122,6 +179,12 @@ struct Onboarding: View {
             email = ""
             
         }
+    }
+    
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = #"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"#
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
     }
 }
 
